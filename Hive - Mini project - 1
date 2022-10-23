@@ -66,6 +66,45 @@ select agent_name,sum(total_feedback) total_feed_feedback from agentperformance 
 
 select agent_name,round(avg(average_rating),2) avg_rating from agentperformance where total_chats>0 group by agent_name having avg(average_rating) between  3.5 and 4;
 
+9. Agent name who have rating less than 3.5 
+
+select agent_name,round(avg(average_rating),2) avg_rating from agentperformance where total_chats>0 group by agent_name having avg(average_rating) < 3.5;
+
+10. Agent name who have rating more than 4.5
+
+select agent_name,round(avg(average_rating),2) avg_rating from agentperformance where total_chats>0 group by agent_name having avg(average_rating) > 4.5;
+
+11. How many feedback agents have received more than 4.5 average
+
+select agent_name,sum(total_feedback) total_feedback from agentperformance where total_chats>0 group by agent_name having avg(average_rating)>4.5;
+
+12. average weekly response time for each agent 
+
+select agent_name,
+date_format(from_unix time(unix_timestamp(date,'MM/dd/yyyy')),'W') week_of_month,
+round (avg(3600*hour(average_response_time) + 60*minute (average_response_time)),2) avg_response_time_in_seconds from agentperformance where total_chats>0
+group by agent_name, date_format(from_unixtime(unix_timestamp(date,'MM/dd//yyyy')),'W';
+
+13. average weekly resolution time for each agents 
+
+select agent_name,
+date_format(from_unix time(unix_timestamp(date,'MM/dd/yyyy')),'W') week_of_month,
+round (avg(60*hour(average_resolution_time) + minute (average_resolution_time) + second(average_resolution_time)/60),2) avg_resolution_time_in_minutes from agentperformance where total_chats>0
+group by agent_name, date_format(from_unixtime(unix_timestamp(date,'MM/dd//yyyy')),'W';
+
+14. Find the number of chat on which they have received a feedback 
+
+select agent_name,sum(total_chats) total_chats,sum(total_feedback) total_feedback from agentperformance group by agent_name;
+
+15. Total contribution hour for each and every agents weekly basis 
+
+
+
+16. Perform inner join, left join and right join based on the agent column and after joining the table export that data into your local system.
+
+
+
+17. Perform partitioning on top of the agent column and then on top of that perform bucketing for each partitioning.
 
 
 
