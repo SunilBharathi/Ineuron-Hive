@@ -22,3 +22,61 @@ create table Agent Performance
 row format delimited
 fields terminated by ','
 TBLPROPERTIES ("skip.header.line.count"="1");
+
+create table AgentLogingReport
+(
+SL_No int,
+Date string,
+Login_Time string,
+Logout_Time string,
+Duration string
+)
+row format delimited
+fields terminated by ','
+TBLPROPERTIES ("skip.header.line.count"="1");
+
+
+2. Dump the data inside the hdfs in the given schema location.
+
+load data local inpath 'file:///home/cloudera/AgentPerformance.csv' into table AgentPerformance;
+
+load data local inpath 'file:///home/cloudera/AgentLoggingReport.csv' into table AgentLoggingReport;
+
+3. List of all agents' names.
+
+select Agent_Name from AgentPerformance;
+
+4. Find out agent average rating.
+
+select agent_name,round(avg(average_rating),2) avg_rating from agentperformance where total_chats>0 group by agent_name;
+
+5. Total working days for each agents
+
+select Agent_Name,count(distinct date) No_of_Working_Days from AgentLogingReport group by Agent_Name;
+
+6. Total query that each agent have taken 
+
+select Agent_Name,sum(total_chats) Total_queries from AgentPerformance group by Agent_Name;
+
+7. Total Feedback that each agent have received 
+
+select agent_name,sum(total_feedback) total_feed_feedback from agentperformance group by agent_name;
+
+8. Agent name who have average rating between 3.5 to 4 
+
+select agent_name,round(avg(average_rating),2) avg_rating from agentperformance where total_chats>0 group by agent_name having avg(average_rating) between  3.5 and 4;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
